@@ -1,0 +1,5 @@
+FROM nginx:1.29.1-alpine
+RUN apk add curl
+WORKDIR /etc/nginx/conf.d/
+COPY src-nginx/nginx.conf .
+RUN rm default.conf
