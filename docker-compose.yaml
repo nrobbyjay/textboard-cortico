@@ -26,3 +26,17 @@ services:
     timeout: 5s
     retries: 3
   restart: always
+
+ ui:
+  build:
+   context: .
+   dockerfile: ui
+  container_name: ui
+  expose:
+   - "5500"
+  healthcheck:
+    test: ["CMD", "curl", "-f", "http://localhost:5500/health"]
+    interval: 30s
+    timeout: 5s
+    retries: 3
+  restart: always
