@@ -30,8 +30,13 @@ I used ubuntu LTS 22.04, if you need to install docker, please follow the offici
 git git@github.com:nrobbyjay/textboard-cortico.git
 cd textboard-cortico
 ```
+2. **Find and modify .env file**
+```bash
+DATA_SERVER_STORAGE_BLOCK=/tmp
+```
+Set a directory for DATA_SERVER_STORAGE_BLOCK. This is where all localstate data of the app will be saved (such as messages, logs, and events)
 
-2. **Start the application**
+3. **Start the application**
 ```bash
 sudo docker compose up
 ```

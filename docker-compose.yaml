@@ -12,6 +12,8 @@ services:
     interval: 30s
     timeout: 5s
     retries: 3
+  volumes:
+   - ${DATA_SERVER_STORAGE_BLOCK}:/data
  nginx:
   build:
    context: .
