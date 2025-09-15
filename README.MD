@@ -46,5 +46,6 @@ sudo docker compose up
     
 
 ```
-http://localhost/api
+http://localhost/
 ```
+4. **Click plus sign to add new content on board and refresh manually to get new content**  
