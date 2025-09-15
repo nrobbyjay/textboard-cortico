@@ -81,3 +81,38 @@ cat ${DATA_SERVER_STORAGE_BLOCK}/logs/<date_formatted_file>
 ```
 
 Replace `<date_formatted_file>` with the filename of the previous log you want to check. For example, yesterday's log could be named `api.log.2025-09-14`. The the file will also log malformed request
+
+## 🧪 Automated Testing / Pytest
+
+Automated testing has been deployed using **pytest**. The tests are located in `test_main.py` inside the `api` directory. Follow these steps to run the tests:
+
+1. **Recommended environment**
+    
+    - Linux or macOS. If using Windows, use WSL.
+        
+    - Docker and Docker Compose must be installed.
+        
+2. **Give execute permission to the test script**
+    
+
+```bash
+sudo chmod +x test.sh
+```
+
+3. **Run the test script**
+    
+
+```bash
+sudo ./test.sh
+```
+
+> **What the script does:**
+> 
+> - Builds a Docker image and container named `api-test`.
+>     
+> - Runs automated tests from `api/test_main.py` for sending and receiving messages and images.
+>     
+> - Prunes/deletes the container after tests pass or fail.
+>     
+
+This allows users to quickly verify that the application is functioning as expected without manually setting up test containers.
