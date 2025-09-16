@@ -82,6 +82,35 @@ cat ${DATA_SERVER_STORAGE_BLOCK}/logs/<date_formatted_file>
 
 Replace `<date_formatted_file>` with the filename of the previous log you want to check. For example, yesterday's log could be named `api.log.2025-09-14`. The the file will also log malformed request
 
+
+The application logs errors effectively for maintainability. Some reproducible error cases include:
+
+1. **Database Error**
+    
+    - Scenario: Database is missing, deleted, or overloaded.
+        
+    - Log produced:
+        
+    
+    ```
+    2025-09-16 01:28:59,161 [ERROR] textboard: Unable to fetch data: Object of type OperationalError is not JSON serializable
+	2025-09-16 01:29:12,066 [ERROR] textboard: Unable to send message content: Unable to write to database; Database is locked!
+    ```
+    
+2. **Malformed Request / Client Error**
+    
+    - Scenario: Request with missing or invalid fields, or wrong keys.
+        
+    - Log produced:
+        
+    
+    ```
+    2025-09-16 01:30:54,864 [ERROR] textboard: Validation error on /message/send: [{'type': 'missing', 'loc': ('body', 'name'), 'msg': 'Field required', 'input': {'nae': 'Danica', 'content': 'hello'}}] | Body: {'nae': 'Danica', 'content': 'hello'}
+    ```
+    
+
+> These examples show structured and centralized logging, making it easy to monitor, debug, and maintain the application.
+
 ## 🧪 Automated Testing / Pytest
 
 Automated testing has been deployed using **pytest**. The tests are located in `test_main.py` inside the `api` directory. Follow these steps to run the tests:
@@ -127,3 +156,6 @@ http://localhost/performance
 ```
 
 This page provides live metrics on system and application performance.
+
+NOTE: The disk indicated on the metrics was the path defined at DATA_SERVER_STORAGE_BLOCK
+
