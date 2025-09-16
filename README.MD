@@ -31,10 +31,14 @@ git git@github.com:nrobbyjay/textboard-cortico.git
 cd textboard-cortico
 ```
 2. **Find and modify .env file**
+
+.env file content:
 ```bash
 DATA_SERVER_STORAGE_BLOCK=/tmp
 ```
 Specify a directory for DATA_SERVER_STORAGE_BLOCK. All local state data of the app, including messages, logs, and events, will be stored here. The default location is /tmp; modify it according to your preference.
+
+> ⚠️ **Warning:** .env file is considered hidden. You may not see it in your system using the ls command (tip: use -a instead).
 
 3. **Start the application**
 ```bash
