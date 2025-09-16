@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Server Performance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="{{url_for('static', filename='style.css')}}" rel="stylesheet">
+
+
+</head>
+
+<body class="bg-light">
+    <div class="container py-5">
+    <table>
+        <thead>
+            <tr>
+                <th>CPU Usage %</th>
+                <th>Memory Usage %</th>
+                <th>Disk Usage %</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="cpuVal">-</td>
+                <td id="memVal">-</td>
+                <td id="diskVal">-</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <canvas id="cpuCanvas" width="600" height="150"></canvas>
+    <canvas id="memoryCanvas" width="600" height="150"></canvas>
+    <canvas id="diskCanvas" width="600" height="150"></canvas>
+
+    <script>
+        const cpuCanvas = document.getElementById('cpuCanvas');
+        const memCanvas = document.getElementById('memoryCanvas');
+        const diskCanvas = document.getElementById('diskCanvas');
+
+        const cpuCtx = cpuCanvas.getContext('2d');
+        const memCtx = memCanvas.getContext('2d');
+        const diskCtx = diskCanvas.getContext('2d');
+
+        const maxDataPoints = 60;
+        const cpuData = [];
+        const memData = [];
+        const diskData = [];
+
+        const cpuValEl = document.getElementById('cpuVal');
+        const memValEl = document.getElementById('memVal');
+        const diskValEl = document.getElementById('diskVal');
+
+        function drawGraph(ctx, data, color, label) {
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            ctx.fillStyle = '#000';
+            ctx.font = '14px Arial';
+            ctx.fillText(label, 10, 20);
+
+            ctx.strokeStyle = '#ccc';
+            ctx.beginPath();
+            ctx.moveTo(50, 10);
+            ctx.lineTo(50, ctx.canvas.height - 30);
+            ctx.lineTo(ctx.canvas.width - 10, ctx.canvas.height - 30);
+            ctx.stroke();
+
+            if(data.length < 2) return;
+
+            ctx.strokeStyle = color;
+            ctx.beginPath();
+            const stepX = (ctx.canvas.width - 60) / (maxDataPoints - 1);
+            data.forEach((value, i) => {
+                const x = 50 + i * stepX;
+                const y = ctx.canvas.height - 30 - ((ctx.canvas.height - 40) * value / 100);
+                if(i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+        }
+
+        async function fetchMetrics() {
+            try {
+                const res = await fetch('/performance/metrics');
+                const json = await res.json();
+
+                cpuData.push(json.cpu_usage);
+                memData.push(json.memory_usage);
+                diskData.push(json.disk_usage);
+
+                if(cpuData.length > maxDataPoints) cpuData.shift();
+                if(memData.length > maxDataPoints) memData.shift();
+                if(diskData.length > maxDataPoints) diskData.shift();
+
+                cpuValEl.textContent = json.cpu_usage.toFixed(1);
+                memValEl.textContent = json.memory_usage.toFixed(1);
+                diskValEl.textContent = json.disk_usage.toFixed(1);
+
+                drawGraph(cpuCtx, cpuData, 'red', 'CPU Usage %');
+                drawGraph(memCtx, memData, 'green', 'Memory Usage %');
+                drawGraph(diskCtx, diskData, 'blue', 'Disk Usage %');
+            } catch (err) {
+                console.error('Failed to fetch metrics', err);
+            }
+        }
+
+        setInterval(fetchMetrics, 1000);
+        fetchMetrics();
+    </script>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

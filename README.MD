@@ -116,3 +116,14 @@ sudo ./test.sh
 >     
 
 This allows users to quickly verify that the application is functioning as expected without manually setting up test containers.
+
+
+## 📊 Monitoring
+
+You can view real-time performance monitoring of the host server by opening your browser and navigating to:
+
+```
+http://localhost/performance
+```
+
+This page provides live metrics on system and application performance.
