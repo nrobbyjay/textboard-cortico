@@ -44,6 +44,11 @@ Specify a directory for DATA_SERVER_STORAGE_BLOCK. All local state data of the a
 ```bash
 sudo docker compose up
 ```
+> ⚠️ **Warning:** This will display container logs, to run in background:
+```bash
+sudo docker compose up -d
+```
+
 
 4. **Access the app**  
     Open your browser and go to:
