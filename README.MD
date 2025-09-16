@@ -21,6 +21,8 @@ This app is packaged using docker that allows teams and multiple individual to c
 - Nginx  
 - Docker
 
+> **Note**: localhost on the example below maybe your private IP or a public routed IP / domain name(when deployed on cloud or routed on a name server)
+
 ## 🚀 Installation
 
 I used ubuntu LTS 22.04, if you need to install docker, please follow the official docs!
